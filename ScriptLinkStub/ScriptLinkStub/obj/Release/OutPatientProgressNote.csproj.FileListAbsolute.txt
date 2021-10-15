@@ -53,12 +53,14 @@ H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\b
 H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\bin\Newtonsoft.Json.dll
 H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\bin\NLog.dll
 H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\bin\NTST.ScriptLinkService.Objects.dll
+H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\bin\WinSW.NET461.exe
 H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\bin\NTST.ScriptLinkService.Objects.pdb
 H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\bin\NTST.ScriptLinkService.Objects.xml
 H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\bin\Newtonsoft.Json.xml
 H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\bin\NLog.xml
-H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\obj\Release\OutPatientProgressNote.csprojAssemblyReference.cache
+H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\bin\WinSW.NET461.xml
+H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\obj\Release\OutPatientProgressNote.csproj.AssemblyReference.cache
 H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\obj\Release\OutPatientProgressNote.csproj.CoreCompileInputs.cache
 H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\obj\Release\OutPatientProgressNote.csproj.CopyComplete
 H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\obj\Release\ScriptLinkStub.dll
