@@ -36,206 +36,43 @@ namespace ScriptLinkStub
             public HashSet<string> Duration38To52 = new HashSet<string>();
             public HashSet<string> Duration53Plus = new HashSet<string>();
 
-            // Expanded Duration Checks - 09/08/2021
+            // Expanded Duration Checks - New from "Uniform Service Coding Standards Manual"
+            // For October 2021
+            //
+            // NOTE - Per Scott Jones NoMax in the USCSM translates to 24Hrs per HS
+            // business policies
+            public HashSet<string> Duration241To24Hrs = new HashSet<string>();
+            public HashSet<string> Duration248To480 = new HashSet<string>();
+            public HashSet<string> Duration248To24Hrs = new HashSet<string>();
+            public HashSet<string> Duration26To24Hrs = new HashSet<string>();
             public HashSet<string> Duration30To74 = new HashSet<string>();
+            public HashSet<string> Duration30To24Hrs = new HashSet<string>();
+
+            // Already defined in original set - use as placeholder to keep in sync with list
+            //public HashSet<string> Duration38To52 = new HashSet<string>();
+
+            public HashSet<string> Duration45To24Hrs = new HashSet<string>();
+            public HashSet<string> Duration53To24Hrs = new HashSet<string>();
+            public HashSet<string> Duration8To240 = new HashSet<string>();
             public HashSet<string> Duration8To247 = new HashSet<string>();
             public HashSet<string> Duration8To480 = new HashSet<string>();
-            public HashSet<string> Duration248To480 = new HashSet<string>();
-            public HashSet<string> Duration8To248 = new HashSet<string>();
-            public HashSet<string> Duration0To248 = new HashSet<string>();
-            public HashSet<string> Duration0To53 = new HashSet<string>();
-            public HashSet<string> Duration0To26 = new HashSet<string>();
-            public HashSet<string> Duration0To30 = new HashSet<string>();            
-            public HashSet<string> Duration0To45 = new HashSet<string>();
-            public HashSet<string> Duration0To8 = new HashSet<string>();
-            public HashSet<string> Duration0To31 = new HashSet<string>();
+            public HashSet<string> Duration8To24Hrs = new HashSet<string>();
+            public HashSet<string> Duration0To24Hrs = new HashSet<string>();
 
-            private static void init()
-            {
-                // NOTE - DATA DRIVE THIS - PUT INTO A TABLE AND USE A SELECT TO
-                //        RETRIEVE THESE VALUES
-                // Read Configuration
-                using (FileStream fs = File.OpenRead("C:\\inetpub\\wwwroot\\OutPatientProgressNote\\OutPatientProgressNote.json"))
-                {
-                    using (StreamReader configStreamReader = new StreamReader(fs))
-                    {
-                        string configStr = configStreamReader.ReadToEnd();
-                        log.Debug("SDJL: configStr = '" + configStr + "'");
-                        instance = JsonConvert.DeserializeObject<OutPatientProgressNoteConfig>(configStr);                        
-                        log.Debug("Config = Duration16To37 " + OutPatientProgressNoteConfig.getInstance().GetDuration16To37().ToString());
-                        log.Debug("Config = Duration16To37 Count" + OutPatientProgressNoteConfig.getInstance().GetDuration16To37().Count());
-                        log.Debug("Config = Duration38To52 " + OutPatientProgressNoteConfig.getInstance().GetDuration38To52().ToString());
-                        log.Debug("Config = Duration38To52 Count" + OutPatientProgressNoteConfig.getInstance().GetDuration38To52().Count());
-                        log.Debug("Config = Duration53Plus " + OutPatientProgressNoteConfig.getInstance().GetDuration53Plus().ToString());
-                        log.Debug("Config = Duration53Plus Count" + OutPatientProgressNoteConfig.getInstance().GetDuration53Plus().Count());
-                        log.Debug("Config = Duration30To74 Count" + OutPatientProgressNoteConfig.getInstance().GetDuration30To74().Count());
-                        log.Debug("Config = Duration8To247 Count" + OutPatientProgressNoteConfig.getInstance().GetDuration8To247().Count());
-                        log.Debug("Config = Duration248To480 Count" + OutPatientProgressNoteConfig.getInstance().GetDuration248To480().Count());
-                        log.Debug("Config = Duration8To248 Count" + OutPatientProgressNoteConfig.getInstance().GetDuration8To248().Count());
-                        log.Debug("Config = Duration0To248 Count" + OutPatientProgressNoteConfig.getInstance().GetDuration0To248().Count());
-                        log.Debug("Config = Duration0To53 Count" + OutPatientProgressNoteConfig.getInstance().GetDuration0To53().Count());
-                        log.Debug("Config = Duration0To26 Count" + OutPatientProgressNoteConfig.getInstance().GetDuration0To26().Count());
-                        log.Debug("Config = Duration0To30 Count" + OutPatientProgressNoteConfig.getInstance().GetDuration0To30().Count());
-                        log.Debug("Config = Duration0To30 Count" + OutPatientProgressNoteConfig.getInstance().GetDuration0To30().Count());
-                        log.Debug("Config = Duration0To45 Count" + OutPatientProgressNoteConfig.getInstance().GetDuration0To45().Count());
-                        log.Debug("Config = Duration0To8 Count" + OutPatientProgressNoteConfig.getInstance().GetDuration0To8().Count());
-                        log.Debug("Config = Duration0To31 Count" + OutPatientProgressNoteConfig.getInstance().GetDuration0To31().Count());
+            // Expanded Duration Checks - 09/08/2021
+            //public HashSet<string> Duration30To74 = new HashSet<string>();
+            //public HashSet<string> Duration8To247 = new HashSet<string>();
+            //public HashSet<string> Duration8To480 = new HashSet<string>();
+            //public HashSet<string> Duration248To480 = new HashSet<string>();
+            //public HashSet<string> Duration8To248 = new HashSet<string>();
+            //public HashSet<string> Duration0To248 = new HashSet<string>();
+            //public HashSet<string> Duration0To53 = new HashSet<string>();
+            //public HashSet<string> Duration0To26 = new HashSet<string>();
+            //public HashSet<string> Duration0To30 = new HashSet<string>();            
+            //public HashSet<string> Duration0To45 = new HashSet<string>();
+            //public HashSet<string> Duration0To8 = new HashSet<string>();
+            //public HashSet<string> Duration0To31 = new HashSet<string>();
 
-                    }
-                }
-
-            }
-
-            public static OutPatientProgressNoteConfig getInstance()
-            {
-                if (instance == null)
-                {
-                    init();
-                }
-                return instance;
-            }
-
-            public static OutPatientProgressNoteConfig GetOutPatientProgressNoteConfig()
-            {
-                if (instance == null)
-                {
-                    init();
-                }
-                return instance;
-            }
-
-            public static void SetOutPatientProgressNoteConfig(OutPatientProgressNoteConfig config)
-            {
-                instance = config;
-            }
-
-            public HashSet<string> GetDuration0To31()
-            {
-                return Duration0To31;
-            }
-
-            public void SetDuration0To31(HashSet<string> set)
-            {
-                Duration0To31 = set;
-            }
-
-
-            public HashSet<string> GetDuration0To8()
-            {
-                return Duration0To8;
-            }
-
-            public void SetDuration0To8(HashSet<string> set)
-            {
-                Duration0To8 = set;
-            }
-
-
-            public HashSet<string> GetDuration0To45()
-            {
-                return Duration0To45;
-            }
-
-            public void SetDuration0To45(HashSet<string> set)
-            {
-                Duration0To45 = set;
-            }
-
-
-
-
-            public HashSet<string> GetDuration0To30()
-            {
-                return Duration0To30;
-            }
-
-            public void SetDuration0To30(HashSet<string> set)
-            {
-                Duration0To30 = set;
-            }
-
-
-            public HashSet<string> GetDuration0To26()
-            {
-                return Duration0To26;
-            }
-
-            public void SetDuration0To26(HashSet<string> set)
-            {
-                Duration0To26 = set;
-            }
-
-            public HashSet<string> GetDuration0To53()
-            {
-                return Duration0To53;
-            }
-
-            public void SetDuration0To53(HashSet<string> set)
-            {
-                Duration0To53 = set;
-            }
-
-
-            public HashSet<string> GetDuration0To248()
-            {
-                return Duration0To248;
-            }
-
-            public void SetDuration0To248(HashSet<string> set)
-            {
-                Duration0To248 = set;
-            }
-
-            public HashSet<string> GetDuration8To248()
-            {
-                return Duration8To248;
-            }
-
-            public void SetDuration8To248(HashSet<string> set)
-            {
-                Duration8To248 = set;
-            }
-
-            public HashSet<string> GetDuration8To480()
-            {
-                return Duration8To480;
-            }
-
-            public void SetDuration8To480(HashSet<string> set)
-            {
-                Duration8To480 = set;
-            }
-
-
-            public HashSet<string> GetDuration248To480()
-            {
-                return Duration248To480;
-            }
-
-            public void SetDuration248To480(HashSet<string> set)
-            {
-                Duration248To480 = set;
-            }
-
-            public HashSet<string> GetDuration8To247()
-            {
-                return Duration8To247;
-            }
-
-            public void SetDuration8To247(HashSet<string> set)
-            {
-                Duration8To247 = set;
-            }
-
-            public HashSet<string> GetDuration30To74()
-            {
-                return Duration30To74;
-            }
-
-            public void SetDuration30To74(HashSet<string> set)
-            {
-                Duration30To74 = set;
-            }
 
             public HashSet<string> GetDuration16To37()
             {
@@ -268,6 +105,196 @@ namespace ScriptLinkStub
                 Duration53Plus = set;
             }
 
+
+            public HashSet<string> GetDuration241To24Hrs()
+            {
+                return Duration241To24Hrs;
+            }
+
+            public void SetDuration241To24Hrs(HashSet<string> set) {
+                Duration241To24Hrs = set;
+            }
+
+
+            public HashSet<String> GetDuration248To480()
+            {
+                return Duration248To480;
+            }
+
+            public void SetDuration248To480(HashSet<string> set) {
+                Duration248To480 = set;
+            }
+
+
+            public HashSet<string> GetDuration248To24Hrs()
+            {
+                return Duration248To24Hrs;
+            }
+
+            public void SetDuration248To24Hrs(HashSet<string> set)
+            {
+                Duration248To24Hrs = set;
+            }
+
+            public HashSet<string> GetDuration26To24Hrs()
+            {
+                return Duration26To24Hrs;
+            }
+
+            public void GetDuration26To24Hrs(HashSet<string> set) {
+                Duration26To24Hrs = set;
+            }
+
+            public HashSet<string> GetDuration30To74()
+            {
+                return Duration30To74;
+            }
+
+            public void SetDuration30To74(HashSet<string> set)
+            {
+                Duration30To74 = set;
+            }
+
+
+            public HashSet<string> GetDuration30To24Hrs()
+            {
+                return Duration30To24Hrs;
+            }
+
+            public void SetDuration30To24Hrs(HashSet<string> set)
+            {
+                Duration30To24Hrs = set;
+            }
+
+
+            public HashSet<string> GetDuration45To24Hrs()
+            {
+                return Duration45To24Hrs;
+            }
+
+            public void SetDuration45To24Hrs(HashSet<string> set)
+            {
+                Duration45To24Hrs = set;
+            }
+
+            public HashSet<string> GetDuration53To24Hrs()
+            {
+                return Duration53To24Hrs;
+            }
+
+            public void SetDuration53To24Hrs(HashSet<string> set)
+            {
+                Duration53To24Hrs = set;
+            }
+
+            public HashSet<string> GetDuration8To240()
+            {
+                return Duration8To240;
+            }
+
+            public void SetDuration8To240(HashSet<string> set)
+            {
+                Duration8To240 = set;
+            }
+
+            public HashSet<string> GetDuration8To247()
+            {
+                return Duration8To247;
+            }
+
+            public void SetDuration8To247(HashSet<string> set)
+            {
+                Duration8To247 = set;
+            }
+
+            public HashSet<string> GetDuration8To480()
+            {
+                return Duration8To480;
+            }
+
+            public void SetDuration8To480(HashSet<string> set)
+            {
+                Duration8To480 = set;
+            }
+
+            public HashSet<string> GetDuration8To24Hrs()
+            {
+                return Duration8To24Hrs;
+            }
+
+            public void SetDuration8To24Hrs(HashSet<string> set)
+            {
+                Duration8To24Hrs = set;
+            }
+
+            public HashSet<string> GetDuration0To24Hrs()
+            {
+                return Duration0To24Hrs;
+            }
+
+            public void SetDuration0To24Hrs(HashSet<string> set)
+            {
+                Duration0To24Hrs = set; 
+            }
+
+            private static void init()
+            {
+                // NOTE - DATA DRIVE THIS - PUT INTO A TABLE AND USE A SELECT TO
+                //        RETRIEVE THESE VALUES
+                // Read Configuration
+                using (FileStream fs = File.OpenRead("C:\\inetpub\\wwwroot\\OutPatientProgressNote\\OutPatientProgressNote.json"))
+                {
+                    using (StreamReader configStreamReader = new StreamReader(fs))
+                    {
+                        string configStr = configStreamReader.ReadToEnd();
+                        log.Debug("SDJL: configStr = '" + configStr + "'");
+                        instance = JsonConvert.DeserializeObject<OutPatientProgressNoteConfig>(configStr);
+                        log.Debug("Config = Duration16To37 " + OutPatientProgressNoteConfig.getInstance().GetDuration16To37().ToString());
+                        log.Debug("Config = Duration38To52 " + OutPatientProgressNoteConfig.getInstance().GetDuration38To52().ToString());
+                        log.Debug("Config = Duration53Plug " + OutPatientProgressNoteConfig.getInstance().GetDuration53Plus().ToString());
+                        log.Debug("Config = Duration241To24Hrs " + OutPatientProgressNoteConfig.getInstance().GetDuration241To24Hrs().ToString());
+                        log.Debug("Config = Duration248To480 " + OutPatientProgressNoteConfig.getInstance().GetDuration248To480().ToString());
+                        log.Debug("Config = Duration248To24Hrs " + OutPatientProgressNoteConfig.getInstance().GetDuration248To24Hrs().ToString());
+                        log.Debug("Config = Duration26To24Hrs " + OutPatientProgressNoteConfig.getInstance().GetDuration26To24Hrs().ToString());
+                        log.Debug("Config = Duration30To37 " + OutPatientProgressNoteConfig.getInstance().GetDuration30To74().ToString());
+                        log.Debug("Config = Duration30To24Hrs " + OutPatientProgressNoteConfig.getInstance().GetDuration30To24Hrs().ToString());
+                        log.Debug("Config = Duration45To24Hrs " + OutPatientProgressNoteConfig.getInstance().GetDuration45To24Hrs().ToString());
+                        log.Debug("Config = Duration53To24Hrs " + OutPatientProgressNoteConfig.getInstance().GetDuration53To24Hrs().ToString());
+                        log.Debug("Config = Duration8To240 " + OutPatientProgressNoteConfig.getInstance().GetDuration8To240().ToString());
+                        log.Debug("Config = Duration8To247 " + OutPatientProgressNoteConfig.getInstance().GetDuration8To247().ToString());
+                        log.Debug("Config = Duration8To480 " + OutPatientProgressNoteConfig.getInstance().GetDuration8To480().ToString());
+                        log.Debug("Config = Duration8To24Hrs " + OutPatientProgressNoteConfig.getInstance().GetDuration8To24Hrs().ToString());
+                        log.Debug("Config = Duration0To24Hrs " + OutPatientProgressNoteConfig.getInstance().GetDuration0To24Hrs().ToString());
+
+                    }
+                }
+
+            }
+
+            public static OutPatientProgressNoteConfig getInstance()
+            {
+                if (instance == null)
+                {
+                    init();
+                }
+                return instance;
+            }
+
+            public static OutPatientProgressNoteConfig GetOutPatientProgressNoteConfig()
+            {
+                if (instance == null)
+                {
+                    init();
+                }
+                return instance;
+            }
+
+            public static void SetOutPatientProgressNoteConfig(OutPatientProgressNoteConfig config)
+            {
+                instance = config;
+            }
+
+
         }
 
         [WebMethod]
@@ -290,9 +317,10 @@ namespace ScriptLinkStub
                 log.Debug("SDJL - BEGIN OutPatient ProgressNote RunScript '" + scriptParameter + "'");
                 OutPatientProgressNoteConfig config = OutPatientProgressNoteConfig.getInstance();
 
+                log.Debug("SDJL OutpatientProgressNote scriptParameter: '"+scriptParameter+"' - 2 SDJL");
                 switch (scriptParameter)
                 {
-                    case "HS_OutpatientProgerssNote CheckDuration":
+                    case "HS_OutpatientProgerssnote CheckDuration":
                         log.Debug("Check Progress Node Duration");
                         foreach (FormObject form in inputObject.Forms)
                         {
@@ -311,7 +339,7 @@ namespace ScriptLinkStub
                                         }
                                         else
                                         {
-                                            log.Debug("Duration: Empty: Using Default: "+duration);
+                                            log.Debug("Duration: Empty: Using Default: " + duration);
                                         }
                                         break;
 
@@ -331,30 +359,42 @@ namespace ScriptLinkStub
                         log.Debug("Contains: config.GetDuration53Plus().Count() " + config.GetDuration53Plus().Count());
 
                         // Expanded duration checks
-                        log.Debug("Contains: config.GetDuration30To74().Contains(typeOfService)" + config.GetDuration30To74().Contains(typeOfService));
-                        log.Debug("Contains: config.GetDuration30To74().Count() " + config.GetDuration30To74().Count());
-                        log.Debug("Contains: config.GetDuration8To247().Contains(typeOfService)" + config.GetDuration8To247().Contains(typeOfService));
-                        log.Debug("Contains: config.GetDuration8To247().Count() " + config.GetDuration8To247().Count());
+                        log.Debug("Contains: config.GetDuration16To37().Contains(typeOfService)" + config.GetDuration16To37().Contains(typeOfService));
+                        log.Debug("Contains: config.GetDuration16To37().Count()" + config.GetDuration16To37().Count());
+                        log.Debug("Contains: config.GetDuration38To52().Contains(typeOfService)" + config.GetDuration38To52().Contains(typeOfService));
+                        log.Debug("Contains: config.GetDuration38To52().Count()" + config.GetDuration38To52().Count());
+                        log.Debug("Contains: config.GetDuration53Plus().Contains(typeOfService)" + config.GetDuration53Plus().Contains(typeOfService));
+                        log.Debug("Contains: config.GetDuration53Plus().Count()" + config.GetDuration53Plus().Count());
+                        log.Debug("Contains: config.GetDuration241To24Hrs().Contains(typeOfService)" + config.GetDuration241To24Hrs().Contains(typeOfService));
+                        log.Debug("Contains: config.GetDuration241To24Hrs().Count()" + config.GetDuration241To24Hrs().Count());
                         log.Debug("Contains: config.GetDuration248To480().Contains(typeOfService)" + config.GetDuration248To480().Contains(typeOfService));
-                        log.Debug("Contains: config.GetDuration248To480().Count() " + config.GetDuration248To480().Count());
-                        log.Debug("Contains: config.GetDuration8To248().Contains(typeOfService)" + config.GetDuration8To248().Contains(typeOfService));
-                        log.Debug("Contains: config.GetDuration8To248().Count() " + config.GetDuration8To248().Count());
-                        log.Debug("Contains: config.GetDuration0To248().Contains(typeOfService)" + config.GetDuration0To248().Contains(typeOfService));
-                        log.Debug("Contains: config.GetDuration0To248().Count() " + config.GetDuration0To248().Count());
-                        log.Debug("Contains: config.GetDuration0To53().Contains(typeOfService)" + config.GetDuration0To53().Contains(typeOfService));
-                        log.Debug("Contains: config.GetDuration0To53().Count() " + config.GetDuration0To53().Count());
-                        log.Debug("Contains: config.GetDuration0To26().Contains(typeOfService)" + config.GetDuration0To26().Contains(typeOfService));
-                        log.Debug("Contains: config.GetDuration0To26().Count() " + config.GetDuration0To26().Count());
-                        log.Debug("Contains: config.GetDuration0To30().Contains(typeOfService)" + config.GetDuration0To30().Contains(typeOfService));
-                        log.Debug("Contains: config.GetDuration0To30().Count() " + config.GetDuration0To30().Count());
-                        log.Debug("Contains: config.GetDuration0To45().Contains(typeOfService)" + config.GetDuration0To45().Contains(typeOfService));
-                        log.Debug("Contains: config.GetDuration0To45().Count() " + config.GetDuration0To45().Count());
-                        log.Debug("Contains: config.GetDuration0To8().Contains(typeOfService)" + config.GetDuration0To8().Contains(typeOfService));
-                        log.Debug("Contains: config.GetDuration0To8().Count() " + config.GetDuration0To8().Count());
-                        log.Debug("Contains: config.GetDuration0To31().Contains(typeOfService)" + config.GetDuration0To31().Contains(typeOfService));
-                        log.Debug("Contains: config.GetDuration0To31().Count() " + config.GetDuration0To31().Count());
+                        log.Debug("Contains: config.GetDuration248To480().Count()" + config.GetDuration248To480().Count());
+                        log.Debug("Contains: config.GetDuration248To24Hrs().Contains(typeOfService)" + config.GetDuration248To24Hrs().Contains(typeOfService));
+                        log.Debug("Contains: config.GetDuration248To24Hrs().Count()" + config.GetDuration248To24Hrs().Count());
+                        log.Debug("Contains: config.GetDuration26To24Hrs().Contains(typeOfService)" + config.GetDuration26To24Hrs().Contains(typeOfService));
+                        log.Debug("Contains: config.GetDuration26To24Hrs().Count()" + config.GetDuration26To24Hrs().Count());
+                        log.Debug("Contains: config.GetDuration30To74().Contains(typeOfService)" + config.GetDuration30To74().Contains(typeOfService));
+                        log.Debug("Contains: config.GetDuration30To74().Count()" + config.GetDuration30To74().Count());
+                        log.Debug("Contains: config.GetDuration30to24Hrs().Contains(typeOfService)" + config.GetDuration30To24Hrs().Contains(typeOfService));
+                        log.Debug("Contains: config.GetDuration30to24Hrs().Count()" + config.GetDuration30To24Hrs().Count());
+                        log.Debug("Contains: config.GetDuration45To24Hrs().Contains(typeOfService)" + config.GetDuration45To24Hrs().Contains(typeOfService));
+                        log.Debug("Contains: config.GetDuration45To24Hrs().Count()" + config.GetDuration45To24Hrs().Count());
+                        log.Debug("Contains: config.GetDuration53To24Hrs().Contains(typeOfService)" + config.GetDuration53To24Hrs().Contains(typeOfService));
+                        log.Debug("Contains: config.GetDuration53To24Hrs().Count()" + config.GetDuration53To24Hrs().Count());
+                        log.Debug("Contains: config.GetDuration8To240().Contains(typeOfService)" + config.GetDuration8To240().Contains(typeOfService));
+                        log.Debug("Contains: config.GetDuration8To240().Count()" + config.GetDuration8To240().Count());
+                        log.Debug("Contains: config.GetDuration8To247().Contains(typeOfService)" + config.GetDuration8To247().Contains(typeOfService));
+                        log.Debug("Contains: config.GetDuration8To247().Count()" + config.GetDuration8To247().Count());
+                        log.Debug("Contains: config.GetDuration8To480().Contains(typeOfService)" + config.GetDuration8To480().Contains(typeOfService));
+                        log.Debug("Contains: config.GetDuration8To480().Count()" + config.GetDuration8To480().Count());
+                        log.Debug("Contains: config.GetDuration8to24Hrs().Contains(typeOfService)" + config.GetDuration8To24Hrs().Contains(typeOfService));
+                        log.Debug("Contains: config.GetDuration8to24Hrs().Count()" + config.GetDuration8To24Hrs().Count());
+                        log.Debug("Contains: config.GetDuration0To24Hrs().Contains(typeOfService)" + config.GetDuration0To24Hrs().Contains(typeOfService));
+                        log.Debug("Contains: config.GetDuration0To24Hrs().Count()" + config.GetDuration0To24Hrs().Count());
 
 
+                        // ORIGINAL DURATION CHECKS
+                        log.Debug("OutPationProgressNote.CheckDuration: typeOfService='" + typeOfService + "'");
                         if (config.GetDuration16To37().Contains(typeOfService))
                         {
                             log.Debug("SDJL 90832 - 16<=Duration<=37 Check");
@@ -363,6 +403,10 @@ namespace ScriptLinkStub
                                 log.Debug("SDJL 90832 - FAILED 16<=Duration<=37 Check");
                                 returnObject.ErrorCode = 1;
                                 returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 16-37 minutes";
+                            }
+                            else
+                            {
+                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 16<=Duration<=37 Check");
                             }
                         }
                         else if (config.GetDuration38To52().Contains(typeOfService))
@@ -374,55 +418,49 @@ namespace ScriptLinkStub
                                 returnObject.ErrorCode = 1;
                                 returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 38-52 minutes";
                             }
+                            else
+                            {
+                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 38<=Duration<=52 Check");
+                            }
                         }
                         else if (config.GetDuration53Plus().Contains(typeOfService))
                         {
                             log.Debug("SDJL 90837 - Duration < 53 Check");
                             if (duration < 53)
                             {
-                                log.Debug("SDJL 90837 - FAILED Duration>=53 Check");
+                                log.Debug("SDJL 90837 - FAILED Duration < 53 Check");
                                 returnObject.ErrorCode = 1;
                                 returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 53+ minutes";
+                            }
+                            else
+                            {
+                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED Duration >= 53 Check");
                             }
                         }
 
                         // Expanded Duration Checks
-                        else if (config.GetDuration30To74().Contains(typeOfService))
+                        else if (config.GetDuration241To24Hrs().Contains(typeOfService))
                         {
-                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 30<=Duration<=74 Check");
-                            if ((duration < 30) || (duration > 74))
+                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 241<=Duration<=1440 (24Hrs) Check");
+                            if ((duration < 241) || (duration > 1440))
                             {
-                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 30<=Duration<=74 Check");
-                                log.Debug("For " + typeOfService + ", Duration must be 30 - 74 minutes");
+                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 241<=Duration<=1440 (24Hrs) Check");
+                                log.Debug("For " + typeOfService + ", Duration must be 241 - 1440 minutes");
                                 returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 30-74 minutes";
+                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 241-1440 minutes";
                             }
                             else
                             {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 30<=Duration<=74 Check");
+                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 241<=Duration<=1440 (24Hrs) Check");
                             }
-                        }
-                        else if (config.GetDuration8To247().Contains(typeOfService))
-                        {
-                            log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- 8<=Duration<=247 Check");
-                            if ((duration < 8) || (duration > 247))
-                            {
-                                log.Debug("SDJL Expanded Duration Checks: "+typeOfService+" - FAILED 8<=Duration<=247 Check");                                
-                                returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 8-247 minutes";
-                            }
-                            else
-                            {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 8<=Duration<=247 Check");
-                            }
-
                         }
                         else if (config.GetDuration248To480().Contains(typeOfService))
                         {
-                            log.Debug("SDJL Expanded Duration Checks " + typeOfService + " - FAILED 248<=Duration<=480 Check");
+                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 248<=Duration<=480 Check");
                             if ((duration < 248) || (duration > 480))
                             {
-                                log.Debug("SDJL Expanded Duration Checks - FAILED 248<=Duration<=480 Check");
+                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 248<=Duration<=480 Check");
+                                log.Debug("For " + typeOfService + ", Duration must be 248-480 minutes");
                                 returnObject.ErrorCode = 1;
                                 returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 248-480 minutes";
                             }
@@ -431,132 +469,189 @@ namespace ScriptLinkStub
                                 log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 248<=Duration<=480 Check");
                             }
                         }
-                        else if (config.GetDuration8To248().Contains(typeOfService))
+                        else if (config.GetDuration248To24Hrs().Contains(typeOfService))
                         {
-                            log.Debug("SDJL Expanded Duration Checks - 8<=Duration<=248 Check");
-                            if ((duration < 8) || (duration > 248))
+                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 248<=Duration<=1440 (24Hrs) Check");
+                            if ((duration < 248) || (duration > 1440))
                             {
-                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=248 Check");
+                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 248<=Duration<=1440 (24Hrs) Check");
+                                log.Debug("For " + typeOfService + ", Duration must be 248-1440 minutes");
                                 returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 8-248 minutes";
+                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 248-1440 minutes";
                             }
                             else
                             {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 8<=Duration<=248 Check");
+                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 248<=Duration<=1440 Check");
                             }
                         }
-                        else if (config.GetDuration0To248().Contains(typeOfService))
+                        else if (config.GetDuration26To24Hrs().Contains(typeOfService))
                         {
-                            log.Debug("SDJL Expanded Duration Checks - 0<=Duration<=248 Check");
-                            if ((duration < 0) || (duration > 248))
+                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 26<=Duration<=1440 (24Hrs) Check");
+                            if ((duration < 26) || (duration > 1440))
                             {
-                                log.Debug("SDJL Expanded Duration Checks - FAILED 0<=Duration<=248 Check");
+                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 26<=Duration<=1440 (24Hrs) Check");
+                                log.Debug("For " + typeOfService + ", Duration must be 26-1440 minutes");
                                 returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 0-248 minutes";
+                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 26-1440 minutes";
                             }
                             else
                             {
-                                log.Debug("SDJL Expanded Duration Checks Service Code: "+ typeOfService + "- PASSED 0<=Duration<=248 Check");
+                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 26<=Duration<=1440 Check");
                             }
                         }
-                        else if (config.GetDuration0To53().Contains(typeOfService))
+                        else if (config.GetDuration30To74().Contains(typeOfService))
                         {
-                            log.Debug("SDJL Expanded Duration Checks - 0<=Duration<=53 Check");
-                            if ((duration < 0) || (duration > 53))
+                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 30<=Duration<=74 Check");
+                            if ((duration < 30) || (duration > 74))
                             {
-                                log.Debug("SDJL Expanded Duration Checks - FAILED 0<=Duration<=53 Check");
+                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 30<=Duration<=74 Check");
+                                log.Debug("For " + typeOfService + ", Duration must be 30-74 minutes");
                                 returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 0-53 minutes";
+                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 30-74 minutes";
                             }
                             else
                             {
-                                log.Debug("SDJL Expanded Duration Checks Service Code: " + typeOfService + "- PASSED 0<=Duration<=53 Check");
+                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 30<=Duration<=74 Check");
                             }
                         }
-                        else if (config.GetDuration0To26().Contains(typeOfService))
+                        else if (config.GetDuration30To24Hrs().Contains(typeOfService))
                         {
-                            log.Debug("SDJL Expanded Duration Checks - 0<=Duration<=26 Check");
-                            if ((duration < 0) || (duration > 26))
+                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 30<=Duration<=1440 (24Hrs) Check");
+                            if ((duration < 30) || (duration > 1440))
                             {
-                                log.Debug("SDJL Expanded Duration Checks - FAILED 0<=Duration<=26 Check");
+                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 30<=Duration<=1440 Check");
+                                log.Debug("For " + typeOfService + ", Duration must be 30-1440 minutes");
                                 returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 0-26 minutes";
+                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 30-1440 minutes";
                             }
                             else
                             {
-                                log.Debug("SDJL Expanded Duration Checks Service Code: " + typeOfService + "- PASSED 0<=Duration<=26 Check");
+                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 30<=Duration<=1440 Check");
                             }
                         }
-                        else if (config.GetDuration0To30().Contains(typeOfService))
+                        else if (config.GetDuration45To24Hrs().Contains(typeOfService))
                         {
-                            log.Debug("SDJL Expanded Duration Checks - 0<=Duration<=30 Check");
-                            if ((duration < 0) || (duration > 30))
+                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 45<=Duration<=1440 (24Hrs) Check");
+                            if ((duration < 45) || (duration > 1440))
                             {
-                                log.Debug("SDJL Expanded Duration Checks - FAILED 0<=Duration<=30 Check");
+                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 45<=Duration<=1440 Check");
+                                log.Debug("For " + typeOfService + ", Duration must be 45-1440 minutes");
                                 returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 0-30 minutes";
+                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 45-1440 minutes";
                             }
                             else
                             {
-                                log.Debug("SDJL Expanded Duration Checks Service Code: " + typeOfService + "- PASSED 0<=Duration<=30 Check");
+                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 45<=Duration<=1440 Check");
                             }
                         }
-                        else if (config.GetDuration0To45().Contains(typeOfService))
+                        else if (config.GetDuration53To24Hrs().Contains(typeOfService))
                         {
-                            log.Debug("SDJL Expanded Duration Checks - 0<=Duration<=45 Check");
-                            if ((duration < 0) || (duration > 45))
+                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 53<=Duration<=1440 (24Hrs) Check");
+                            if ((duration < 53) || (duration > 1440))
                             {
-                                log.Debug("SDJL Expanded Duration Checks Service Code: "+typeOfService+" - FAILED 0<=Duration<=45 Check");
+                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 53<=Duration<=1440 Check");
+                                log.Debug("For " + typeOfService + ", Duration must be 53-1440 minutes");
                                 returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 0-45 minutes";
+                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 53-1440 minutes";
                             }
                             else
                             {
-                                log.Debug("SDJL Expanded Duration Checks Service Code: " + typeOfService + "- PASSED 0<=Duration<=45 Check");
+                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 53<=Duration<=1440 Check");
                             }
-                        }
-                        else if (config.GetDuration0To8().Contains(typeOfService))
+                        }                      
+                        else if (config.GetDuration8To240().Contains(typeOfService))
                         {
-                            log.Debug("SDJL Expanded Duration Checks - 0<=Duration<=8 Check");
-                            if ((duration < 0) || (duration > 8))
+                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=240 Check");
+                            if ((duration < 8) || (duration > 240))
                             {
-                                log.Debug("SDJL Expanded Duration Checks Service Code: "+typeOfService+" - FAILED 0<=Duration<=8 Check");
+                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=240 Check");
+                                log.Debug("For " + typeOfService + ", Duration must be 8-240 minutes");
                                 returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 0-8 minutes";
+                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 8-240 minutes";
                             }
                             else
                             {
-                                log.Debug("SDJL Expanded Duration Checks Service Code: " + typeOfService + "- PASSED 0<=Duration<=8 Check");
+                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 8<=Duration<=240 Check");
                             }
                         }
-                        else if (config.GetDuration0To31().Contains(typeOfService))
+                        else if (config.GetDuration8To247().Contains(typeOfService))
                         {
-                            log.Debug("SDJL Expanded Duration Checks - 0<=Duration<=31 Check");
-                            if ((duration < 0) || (duration > 31))
+                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=247 Check");
+                            if ((duration < 8) || (duration > 247))
                             {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: "+typeOfService+" - FAILED 0<=Duration<=31 Check");
+                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=247 Check");
+                                log.Debug("For " + typeOfService + ", Duration must be 8-247 minutes");
                                 returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 0-31 minutes";
+                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 8-247 minutes";
                             }
                             else
                             {
-                                log.Debug("SDJL Expanded Duration Checks Service Code: " + typeOfService + "- PASSED 0<=Duration<=31 Check");
+                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 8<=Duration<=247 Check");
                             }
                         }
-
-                        //  NO Duration checks required for this type of service
+                        else if (config.GetDuration8To480().Contains(typeOfService))
+                        {
+                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=480 Check");
+                            if ((duration < 8) || (duration > 480))
+                            {
+                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=480 Check");
+                                log.Debug("For " + typeOfService + ", Duration must be 8-480 minutes");
+                                returnObject.ErrorCode = 1;
+                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 8-480 minutes";
+                            }
+                            else
+                            {
+                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 8<=Duration<=480 Check");
+                            }
+                        }
+                        else if (config.GetDuration8To24Hrs().Contains(typeOfService))
+                        {
+                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=1440 (24Hrs) Check");
+                            if ((duration < 8) || (duration > 1440))
+                            {
+                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=1440 (24Hrs) Check");
+                                log.Debug("For " + typeOfService + ", Duration must be 8-1440 minutes");
+                                returnObject.ErrorCode = 1;
+                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 8-1440 minutes";
+                            }
+                            else
+                            {
+                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 8<=Duration<=1440 Check");
+                            }
+                        }
+                        else if (config.GetDuration0To24Hrs().Contains(typeOfService))
+                        {
+                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 0<=Duration<=1440 (24Hrs) Check");
+                            if ((duration < 0) || (duration > 1440))
+                            {
+                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 0<=Duration<=1440 (24Hrs) Check");
+                                log.Debug("For " + typeOfService + ", Duration must be 0-1440 minutes");
+                                returnObject.ErrorCode = 1;
+                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 0-1440 minutes";
+                            }
+                            else
+                            {
+                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 0<=Duration<=1440 (24Hrs) Check");
+                            }
+                        }
                         else
                         {
                             log.Debug("Service Code was not one of the codes requiring duration check");
                             returnObject.ErrorCode = 0;
                             returnObject.ErrorMesg = "";
                         }
+                        // END NEW EXPANDED DURATION CHECKS - 10/20/2021
+                        //  NO Duration checks required for this type of service
 
 
                         break;
 
+                    default:
+                        log.Debug("SDJL - Default Case - Do Nothing: Break");
+                        break;
+
                 }
-                log.Debug("Test OutpatientProgressNote Debug");
+                log.Debug("Test OutpatientProgressNote Debug - 2 SDJL");
                 log.Debug("SDJL - END OutPatient ProgressNote RunScript '" + scriptParameter + "'");
                 log.Debug("-----------------------------------------");
             }
