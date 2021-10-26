@@ -10,3 +10,4 @@ H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\NTST.ScriptLinkS
 H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\NTST.ScriptLinkService.Objects\obj\Release\NTST.ScriptLinkService.Objects.dll
 H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\NTST.ScriptLinkService.Objects\obj\Release\NTST.ScriptLinkService.Objects.xml
 H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\NTST.ScriptLinkService.Objects\obj\Release\NTST.ScriptLinkService.Objects.pdb
+H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\NTST.ScriptLinkService.Objects\obj\Release\NTST.ScriptLinkService.Objects.vbproj.AssemblyReference.cache

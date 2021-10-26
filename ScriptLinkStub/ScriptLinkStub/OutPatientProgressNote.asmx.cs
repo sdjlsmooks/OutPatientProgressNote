@@ -308,7 +308,9 @@ namespace ScriptLinkStub
         public OptionObject2015 RunScript(OptionObject2015 inputObject, String scriptParameter)
         {
             OptionObject2015 returnObject = CopyObject(inputObject);
-            int duration = 0;
+            int durationFieldValue = 0;
+            DateTime? serviceStartTime = null;
+            DateTime? serviceEndTime = null;            
             string typeOfService = "";
 
             try
@@ -331,15 +333,104 @@ namespace ScriptLinkStub
                                 //log.Debug("SDJL FieldValue '" + field.FieldValue + "'");
                                 switch (field.FieldNumber)
                                 {
+
+                                    // Service Start Time
+                                    case "3003":
+                                        log.Debug("Service Start Time Field Value: '" + field.FieldValue+"'");
+                                        if (field.FieldValue.Length > 0)
+                                        {
+                                            // See if the user entered in something like Start=1100 End=1500 (2 Hr service)
+                                            if (field.FieldValue.Length == 4)
+                                            {
+                                                try
+                                                {
+                                                    // Assume HHMM DateTime Format.
+                                                    string str = "1300";
+                                                    string format = "HHmm";
+                                                    DateTime date;
+
+
+
+                                                    DateTime.TryParseExact(str,
+                                                                          format,
+                                                                          System.Globalization.CultureInfo.InvariantCulture,
+                                                                          System.Globalization.DateTimeStyles.None,
+                                                                          out date);
+
+                                                    // If the parse fails, the exception will be thrown and this
+                                                    // line will never be reached.
+                                                    serviceStartTime = date;
+                                                }
+                                                catch (FormatException e)
+                                                {
+                                                    log.Debug("SDJL - Parse Start Time '" + field.FieldValue + "' Format Exception: "+e.Message);
+                                                }
+
+                                            }
+                                            if (serviceStartTime == null)
+                                            {
+                                                try
+                                                {
+                                                    serviceStartTime = DateTime.Parse(field.FieldValue);
+                                                }
+                                                catch (FormatException e)
+                                                {
+                                                    log.Debug("SDJL - Parse Start Time '"+field.FieldValue+"' Format Exception: " +e.Message);
+
+                                                }
+                                            }
+                                        }
+                                        break;
+
+                                    // Service End Time End Time
+                                    case "3004":
+                                        log.Debug("Service End Time Field Value: '" + field.FieldValue + "'");
+                                        if (field.FieldValue.Length > 0)
+                                        {
+                                            if (field.FieldValue.Length == 4)
+                                            {
+                                                try
+                                                {
+                                                    // Assume HHMM DateTime Format.
+                                                    string str = "1300";
+                                                    string format = "HHmm";
+                                                    DateTime date;
+
+
+
+                                                    DateTime.TryParseExact(str,
+                                                                          format,
+                                                                          System.Globalization.CultureInfo.InvariantCulture,
+                                                                          System.Globalization.DateTimeStyles.None,
+                                                                          out date);
+
+                                                    // If the parse fails, the exception will be thrown and this
+                                                    // line will never be reached.
+                                                    serviceEndTime = date;
+                                                }
+                                                catch (FormatException e) 
+                                                {
+                                                    log.Debug("SDJL - Parse End Time '" + field.FieldValue + "'" + "Format Exception: " + e.Message);
+                                                }
+
+                                            }
+                                            if (serviceEndTime == null) 
+                                            {
+                                                serviceEndTime = DateTime.Parse(field.FieldValue);
+                                            }
+                                        }
+                                        break;
+
+                                    // Duration Field
                                     case "51003":
                                         if (field.FieldValue.Length > 0)
                                         {
-                                            duration = (int)Int64.Parse(field.FieldValue);
-                                            log.Debug("Duration: " + duration);
+                                            durationFieldValue = (int)Int64.Parse(field.FieldValue);
+                                            log.Debug("Duration Field Value: '" + durationFieldValue+"'");
                                         }
                                         else
                                         {
-                                            log.Debug("Duration: Empty: Using Default: " + duration);
+                                            log.Debug("Duration: Empty: Using Default: " + durationFieldValue);
                                         }
                                         break;
 
@@ -351,6 +442,19 @@ namespace ScriptLinkStub
                             }
                         }
                         log.Debug("TypeOfService Check '" + typeOfService + "'");
+                        log.Debug("Service Start Time = '" + serviceStartTime + "'");
+                        log.Debug("Service End Time =- '" + serviceEndTime + "'");
+                        
+                        int calculatedDurationMinutes = 0; 
+
+                        if ( (serviceStartTime != null) && (serviceEndTime != null) )
+                        {
+                            TimeSpan calculatedDuration = ((DateTime)serviceEndTime).Subtract((DateTime)serviceStartTime);
+                            calculatedDurationMinutes = calculatedDuration.Minutes;
+                        }
+                        log.Debug("Calculated Duration Minutes = '" + calculatedDurationMinutes);
+
+
                         log.Debug("Contains: config.GetDuration16To37().Contains(typeOfService)" + config.GetDuration16To37().Contains(typeOfService));
                         log.Debug("Contains: config.GetDuration16To37().Count() " + config.GetDuration16To37().Count());
                         log.Debug("Contains: config.GetDuration38To52().Contains(typeOfService)" + config.GetDuration38To52().Contains(typeOfService));
@@ -395,251 +499,280 @@ namespace ScriptLinkStub
 
                         // ORIGINAL DURATION CHECKS
                         log.Debug("OutPationProgressNote.CheckDuration: typeOfService='" + typeOfService + "'");
-                        if (config.GetDuration16To37().Contains(typeOfService))
-                        {
-                            log.Debug("SDJL 90832 - 16<=Duration<=37 Check");
-                            if ((duration < 16) || (duration > 37))
-                            {
-                                log.Debug("SDJL 90832 - FAILED 16<=Duration<=37 Check");
-                                returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 16-37 minutes";
-                            }
-                            else
-                            {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 16<=Duration<=37 Check");
-                            }
-                        }
-                        else if (config.GetDuration38To52().Contains(typeOfService))
-                        {
-                            log.Debug("SDJL 90834 - 38<=Duration<=52 Check");
-                            if ((duration < 38) || (duration > 52))
-                            {
-                                log.Debug("SDJL 90834 - FAILED 38<=Duration<=52 Check");
-                                returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 38-52 minutes";
-                            }
-                            else
-                            {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 38<=Duration<=52 Check");
-                            }
-                        }
-                        else if (config.GetDuration53Plus().Contains(typeOfService))
-                        {
-                            log.Debug("SDJL 90837 - Duration < 53 Check");
-                            if (duration < 53)
-                            {
-                                log.Debug("SDJL 90837 - FAILED Duration < 53 Check");
-                                returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 53+ minutes";
-                            }
-                            else
-                            {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED Duration >= 53 Check");
-                            }
-                        }
+                        string errorMessage = validateDuration(typeOfService, durationFieldValue);
+                        log.Debug("errorMessage SDJL after validateDuration errorMessage= '" + errorMessage + "'");
 
-                        // Expanded Duration Checks
-                        else if (config.GetDuration241To24Hrs().Contains(typeOfService))
+                        if (errorMessage != null)
                         {
-                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 241<=Duration<=1440 (24Hrs) Check");
-                            if ((duration < 241) || (duration > 1440))
-                            {
-                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 241<=Duration<=1440 (24Hrs) Check");
-                                log.Debug("For " + typeOfService + ", Duration must be 241 - 1440 minutes");
-                                returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 241-1440 minutes";
-                            }
-                            else
-                            {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 241<=Duration<=1440 (24Hrs) Check");
-                            }
-                        }
-                        else if (config.GetDuration248To480().Contains(typeOfService))
-                        {
-                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 248<=Duration<=480 Check");
-                            if ((duration < 248) || (duration > 480))
-                            {
-                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 248<=Duration<=480 Check");
-                                log.Debug("For " + typeOfService + ", Duration must be 248-480 minutes");
-                                returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 248-480 minutes";
-                            }
-                            else
-                            {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 248<=Duration<=480 Check");
-                            }
-                        }
-                        else if (config.GetDuration248To24Hrs().Contains(typeOfService))
-                        {
-                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 248<=Duration<=1440 (24Hrs) Check");
-                            if ((duration < 248) || (duration > 1440))
-                            {
-                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 248<=Duration<=1440 (24Hrs) Check");
-                                log.Debug("For " + typeOfService + ", Duration must be 248-1440 minutes");
-                                returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 248-1440 minutes";
-                            }
-                            else
-                            {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 248<=Duration<=1440 Check");
-                            }
-                        }
-                        else if (config.GetDuration26To24Hrs().Contains(typeOfService))
-                        {
-                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 26<=Duration<=1440 (24Hrs) Check");
-                            if ((duration < 26) || (duration > 1440))
-                            {
-                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 26<=Duration<=1440 (24Hrs) Check");
-                                log.Debug("For " + typeOfService + ", Duration must be 26-1440 minutes");
-                                returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 26-1440 minutes";
-                            }
-                            else
-                            {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 26<=Duration<=1440 Check");
-                            }
-                        }
-                        else if (config.GetDuration30To74().Contains(typeOfService))
-                        {
-                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 30<=Duration<=74 Check");
-                            if ((duration < 30) || (duration > 74))
-                            {
-                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 30<=Duration<=74 Check");
-                                log.Debug("For " + typeOfService + ", Duration must be 30-74 minutes");
-                                returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 30-74 minutes";
-                            }
-                            else
-                            {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 30<=Duration<=74 Check");
-                            }
-                        }
-                        else if (config.GetDuration30To24Hrs().Contains(typeOfService))
-                        {
-                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 30<=Duration<=1440 (24Hrs) Check");
-                            if ((duration < 30) || (duration > 1440))
-                            {
-                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 30<=Duration<=1440 Check");
-                                log.Debug("For " + typeOfService + ", Duration must be 30-1440 minutes");
-                                returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 30-1440 minutes";
-                            }
-                            else
-                            {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 30<=Duration<=1440 Check");
-                            }
-                        }
-                        else if (config.GetDuration45To24Hrs().Contains(typeOfService))
-                        {
-                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 45<=Duration<=1440 (24Hrs) Check");
-                            if ((duration < 45) || (duration > 1440))
-                            {
-                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 45<=Duration<=1440 Check");
-                                log.Debug("For " + typeOfService + ", Duration must be 45-1440 minutes");
-                                returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 45-1440 minutes";
-                            }
-                            else
-                            {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 45<=Duration<=1440 Check");
-                            }
-                        }
-                        else if (config.GetDuration53To24Hrs().Contains(typeOfService))
-                        {
-                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 53<=Duration<=1440 (24Hrs) Check");
-                            if ((duration < 53) || (duration > 1440))
-                            {
-                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 53<=Duration<=1440 Check");
-                                log.Debug("For " + typeOfService + ", Duration must be 53-1440 minutes");
-                                returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 53-1440 minutes";
-                            }
-                            else
-                            {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 53<=Duration<=1440 Check");
-                            }
-                        }                      
-                        else if (config.GetDuration8To240().Contains(typeOfService))
-                        {
-                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=240 Check");
-                            if ((duration < 8) || (duration > 240))
-                            {
-                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=240 Check");
-                                log.Debug("For " + typeOfService + ", Duration must be 8-240 minutes");
-                                returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 8-240 minutes";
-                            }
-                            else
-                            {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 8<=Duration<=240 Check");
-                            }
-                        }
-                        else if (config.GetDuration8To247().Contains(typeOfService))
-                        {
-                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=247 Check");
-                            if ((duration < 8) || (duration > 247))
-                            {
-                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=247 Check");
-                                log.Debug("For " + typeOfService + ", Duration must be 8-247 minutes");
-                                returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 8-247 minutes";
-                            }
-                            else
-                            {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 8<=Duration<=247 Check");
-                            }
-                        }
-                        else if (config.GetDuration8To480().Contains(typeOfService))
-                        {
-                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=480 Check");
-                            if ((duration < 8) || (duration > 480))
-                            {
-                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=480 Check");
-                                log.Debug("For " + typeOfService + ", Duration must be 8-480 minutes");
-                                returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 8-480 minutes";
-                            }
-                            else
-                            {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 8<=Duration<=480 Check");
-                            }
-                        }
-                        else if (config.GetDuration8To24Hrs().Contains(typeOfService))
-                        {
-                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=1440 (24Hrs) Check");
-                            if ((duration < 8) || (duration > 1440))
-                            {
-                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=1440 (24Hrs) Check");
-                                log.Debug("For " + typeOfService + ", Duration must be 8-1440 minutes");
-                                returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 8-1440 minutes";
-                            }
-                            else
-                            {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 8<=Duration<=1440 Check");
-                            }
-                        }
-                        else if (config.GetDuration0To24Hrs().Contains(typeOfService))
-                        {
-                            log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 0<=Duration<=1440 (24Hrs) Check");
-                            if ((duration < 0) || (duration > 1440))
-                            {
-                                log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 0<=Duration<=1440 (24Hrs) Check");
-                                log.Debug("For " + typeOfService + ", Duration must be 0-1440 minutes");
-                                returnObject.ErrorCode = 1;
-                                returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 0-1440 minutes";
-                            }
-                            else
-                            {
-                                log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 0<=Duration<=1440 (24Hrs) Check");
-                            }
+                            log.Debug("Type Of Service: '"+typeOfService+"'"+" Duration Field Value: '"+durationFieldValue+"'"+"Error Message: '" + errorMessage + "'");
+                            returnObject.ErrorCode = 1;
+                            returnObject.ErrorMesg = errorMessage;
                         }
                         else
                         {
-                            log.Debug("Service Code was not one of the codes requiring duration check");
-                            returnObject.ErrorCode = 0;
-                            returnObject.ErrorMesg = "";
+                            log.Debug("DURATION FIELD VALUE: No Error Found for Type Of Service: " + typeOfService + " Duration Field Value: " + durationFieldValue);
                         }
+
+                        string errorMessageOnCalculatedDuration = validateDuration(typeOfService, calculatedDurationMinutes);
+                        if ((errorMessage == null) && (errorMessageOnCalculatedDuration != null)) 
+                        {
+                            log.Debug("CALCULATED errorMessageOnCalcuatedDuration - Type Of Service: '" + typeOfService + "'" + " Calculated Duration: '" + calculatedDurationMinutes + "'" + "Error Message: '" + errorMessageOnCalculatedDuration + "'");
+                            returnObject.ErrorCode = 1;
+                            returnObject.ErrorMesg = errorMessageOnCalculatedDuration;
+
+                        }
+                        else
+                        {
+                            log.Debug("VALIDATION FUNCTION - No Error Found for Type Of Service: " + typeOfService + " Duration Calculated Minutes: " + durationFieldValue);
+                        }
+
+
+                        
+                        //if (config.GetDuration16To37().Contains(typeOfService))
+                        //{
+                        //    log.Debug("SDJL 90832 - 16<=Duration<=37 Check");
+                        //    if ((durationFieldValue < 16) || (durationFieldValue > 37))
+                        //    {
+                        //        log.Debug("SDJL 90832 - FAILED 16<=Duration<=37 Check");
+                        //        returnObject.ErrorCode = 1;
+                        //        returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 16-37 minutes";
+                        //    }
+                        //    else
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 16<=Duration<=37 Check");
+                        //    }
+                        //}
+                        //else if (config.GetDuration38To52().Contains(typeOfService))
+                        //{
+                        //    log.Debug("SDJL 90834 - 38<=Duration<=52 Check");
+                        //    if ((durationFieldValue < 38) || (durationFieldValue > 52))
+                        //    {
+                        //        log.Debug("SDJL 90834 - FAILED 38<=Duration<=52 Check");
+                        //        returnObject.ErrorCode = 1;
+                        //        returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 38-52 minutes";
+                        //    }
+                        //    else
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 38<=Duration<=52 Check");
+                        //    }
+                        //}
+                        //else if (config.GetDuration53Plus().Contains(typeOfService))
+                        //{
+                        //    log.Debug("SDJL 90837 - Duration < 53 Check");
+                        //    if (durationFieldValue < 53)
+                        //    {
+                        //        log.Debug("SDJL 90837 - FAILED Duration < 53 Check");
+                        //        returnObject.ErrorCode = 1;
+                        //        returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 53+ minutes";
+                        //    }
+                        //    else
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED Duration >= 53 Check");
+                        //    }
+                        //}
+
+                        //// Expanded Duration Checks
+                        //else if (config.GetDuration241To24Hrs().Contains(typeOfService))
+                        //{
+                        //    log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 241<=Duration<=1440 (24Hrs) Check");
+                        //    if ((durationFieldValue < 241) || (durationFieldValue > 1440))
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 241<=Duration<=1440 (24Hrs) Check");
+                        //        log.Debug("For " + typeOfService + ", Duration must be 241 - 1440 minutes");
+                        //        returnObject.ErrorCode = 1;
+                        //        returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 241-1440 minutes";
+                        //    }
+                        //    else
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 241<=Duration<=1440 (24Hrs) Check");
+                        //    }
+                        //}
+                        //else if (config.GetDuration248To480().Contains(typeOfService))
+                        //{
+                        //    log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 248<=Duration<=480 Check");
+                        //    if ((durationFieldValue < 248) || (durationFieldValue > 480))
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 248<=Duration<=480 Check");
+                        //        log.Debug("For " + typeOfService + ", Duration must be 248-480 minutes");
+                        //        returnObject.ErrorCode = 1;
+                        //        returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 248-480 minutes";
+                        //    }
+                        //    else
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 248<=Duration<=480 Check");
+                        //    }
+                        //}
+                        //else if (config.GetDuration248To24Hrs().Contains(typeOfService))
+                        //{
+                        //    log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 248<=Duration<=1440 (24Hrs) Check");
+                        //    if ((durationFieldValue < 248) || (durationFieldValue > 1440))
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 248<=Duration<=1440 (24Hrs) Check");
+                        //        log.Debug("For " + typeOfService + ", Duration must be 248-1440 minutes");
+                        //        returnObject.ErrorCode = 1;
+                        //        returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 248-1440 minutes";
+                        //    }
+                        //    else
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 248<=Duration<=1440 Check");
+                        //    }
+                        //}
+                        //else if (config.GetDuration26To24Hrs().Contains(typeOfService))
+                        //{
+                        //    log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 26<=Duration<=1440 (24Hrs) Check");
+                        //    if ((durationFieldValue < 26) || (durationFieldValue > 1440))
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 26<=Duration<=1440 (24Hrs) Check");
+                        //        log.Debug("For " + typeOfService + ", Duration must be 26-1440 minutes");
+                        //        returnObject.ErrorCode = 1;
+                        //        returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 26-1440 minutes";
+                        //    }
+                        //    else
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 26<=Duration<=1440 Check");
+                        //    }
+                        //}
+                        //else if (config.GetDuration30To74().Contains(typeOfService))
+                        //{
+                        //    log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 30<=Duration<=74 Check");
+                        //    if ((durationFieldValue < 30) || (durationFieldValue > 74))
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 30<=Duration<=74 Check");
+                        //        log.Debug("For " + typeOfService + ", Duration must be 30-74 minutes");
+                        //        returnObject.ErrorCode = 1;
+                        //        returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 30-74 minutes";
+                        //    }
+                        //    else
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 30<=Duration<=74 Check");
+                        //    }
+                        //}
+                        //else if (config.GetDuration30To24Hrs().Contains(typeOfService))
+                        //{
+                        //    log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 30<=Duration<=1440 (24Hrs) Check");
+                        //    if ((durationFieldValue < 30) || (durationFieldValue > 1440))
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 30<=Duration<=1440 Check");
+                        //        log.Debug("For " + typeOfService + ", Duration must be 30-1440 minutes");
+                        //        returnObject.ErrorCode = 1;
+                        //        returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 30-1440 minutes";
+                        //    }
+                        //    else
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 30<=Duration<=1440 Check");
+                        //    }
+                        //}
+                        //else if (config.GetDuration45To24Hrs().Contains(typeOfService))
+                        //{
+                        //    log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 45<=Duration<=1440 (24Hrs) Check");
+                        //    if ((durationFieldValue < 45) || (durationFieldValue > 1440))
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 45<=Duration<=1440 Check");
+                        //        log.Debug("For " + typeOfService + ", Duration must be 45-1440 minutes");
+                        //        returnObject.ErrorCode = 1;
+                        //        returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 45-1440 minutes";
+                        //    }
+                        //    else
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 45<=Duration<=1440 Check");
+                        //    }
+                        //}
+                        //else if (config.GetDuration53To24Hrs().Contains(typeOfService))
+                        //{
+                        //    log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 53<=Duration<=1440 (24Hrs) Check");
+                        //    if ((durationFieldValue < 53) || (durationFieldValue > 1440))
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 53<=Duration<=1440 Check");
+                        //        log.Debug("For " + typeOfService + ", Duration must be 53-1440 minutes");
+                        //        returnObject.ErrorCode = 1;
+                        //        returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 53-1440 minutes";
+                        //    }
+                        //    else
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 53<=Duration<=1440 Check");
+                        //    }
+                        //}                      
+                        //else if (config.GetDuration8To240().Contains(typeOfService))
+                        //{
+                        //    log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=240 Check");
+                        //    if ((durationFieldValue < 8) || (durationFieldValue > 240))
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=240 Check");
+                        //        log.Debug("For " + typeOfService + ", Duration must be 8-240 minutes");
+                        //        returnObject.ErrorCode = 1;
+                        //        returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 8-240 minutes";
+                        //    }
+                        //    else
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 8<=Duration<=240 Check");
+                        //    }
+                        //}
+                        //else if (config.GetDuration8To247().Contains(typeOfService))
+                        //{
+                        //    log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=247 Check");
+                        //    if ((durationFieldValue < 8) || (durationFieldValue > 247))
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=247 Check");
+                        //        log.Debug("For " + typeOfService + ", Duration must be 8-247 minutes");
+                        //        returnObject.ErrorCode = 1;
+                        //        returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 8-247 minutes";
+                        //    }
+                        //    else
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 8<=Duration<=247 Check");
+                        //    }
+                        //}
+                        //else if (config.GetDuration8To480().Contains(typeOfService))
+                        //{
+                        //    log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=480 Check");
+                        //    if ((durationFieldValue < 8) || (durationFieldValue > 480))
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=480 Check");
+                        //        log.Debug("For " + typeOfService + ", Duration must be 8-480 minutes");
+                        //        returnObject.ErrorCode = 1;
+                        //        returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 8-480 minutes";
+                        //    }
+                        //    else
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 8<=Duration<=480 Check");
+                        //    }
+                        //}
+                        //else if (config.GetDuration8To24Hrs().Contains(typeOfService))
+                        //{
+                        //    log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=1440 (24Hrs) Check");
+                        //    if ((durationFieldValue < 8) || (durationFieldValue > 1440))
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=1440 (24Hrs) Check");
+                        //        log.Debug("For " + typeOfService + ", Duration must be 8-1440 minutes");
+                        //        returnObject.ErrorCode = 1;
+                        //        returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 8-1440 minutes";
+                        //    }
+                        //    else
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 8<=Duration<=1440 Check");
+                        //    }
+                        //}
+                        //else if (config.GetDuration0To24Hrs().Contains(typeOfService))
+                        //{
+                        //    log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 0<=Duration<=1440 (24Hrs) Check");
+                        //    if ((durationFieldValue < 0) || (durationFieldValue > 1440))
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 0<=Duration<=1440 (24Hrs) Check");
+                        //        log.Debug("For " + typeOfService + ", Duration must be 0-1440 minutes");
+                        //        returnObject.ErrorCode = 1;
+                        //        returnObject.ErrorMesg = "For " + typeOfService + ", Duration must be 0-1440 minutes";
+                        //    }
+                        //    else
+                        //    {
+                        //        log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 0<=Duration<=1440 (24Hrs) Check");
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    log.Debug("Service Code was not one of the codes requiring duration check");
+                        //    returnObject.ErrorCode = 0;
+                        //    returnObject.ErrorMesg = "";
+                        //}
                         // END NEW EXPANDED DURATION CHECKS - 10/20/2021
                         //  NO Duration checks required for this type of service
 
@@ -651,6 +784,7 @@ namespace ScriptLinkStub
                         break;
 
                 }
+                        
                 log.Debug("Test OutpatientProgressNote Debug - 2 SDJL");
                 log.Debug("SDJL - END OutPatient ProgressNote RunScript '" + scriptParameter + "'");
                 log.Debug("-----------------------------------------");
@@ -659,6 +793,7 @@ namespace ScriptLinkStub
             {
                 log.Debug("Exception: e" + e.ToString());
             }
+
 
             return returnObject;
         }
@@ -674,5 +809,253 @@ namespace ScriptLinkStub
             returnObject.ServerName = inputObject.ServerName;
             return returnObject;
         }
+
+        private string validateDuration(string typeOfService, int durationMinutes)
+
+        {
+            OutPatientProgressNoteConfig config = OutPatientProgressNoteConfig.getInstance();
+            string retVal = null;
+
+
+            // ORIGINAL DURATION CHECKS
+            log.Debug("OutPationProgressNote.CheckDuration: typeOfService='" + typeOfService + "'");
+            
+            if (config.GetDuration16To37().Contains(typeOfService))
+            {
+                log.Debug("SDJL 90832 - 16<=Duration<=37 Check");
+                if ((durationMinutes < 16) || (durationMinutes > 37))
+                {
+                    retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 16-37 minutes";
+                    log.Debug("SDJL 90832 - FAILED 16<=Duration<=37 Check - retVal = '"+retVal+"'");
+                    log.Debug("SDJL: " + retVal);
+
+                }
+                else
+                {
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: "+durationMinutes+" - PASSED 16<=Duration<=37 Check");
+                    retVal = null;
+                }
+            }
+            else if (config.GetDuration38To52().Contains(typeOfService))
+            {
+                log.Debug("SDJL 90834 - 38<=Duration<=52 Check");
+                if ((durationMinutes < 38) || (durationMinutes > 52))
+                {
+                    log.Debug("SDJL 90834 - FAILED 38<=Duration<=52 Check");
+                    retVal = "For " + typeOfService + " Current Duration: "+durationMinutes+", Duration must be 38-52 minutes";
+                    log.Debug("SDJL: " + retVal);
+                }
+                else
+                {
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED 38<=Duration<=52 Check");
+                }
+            }
+            else if (config.GetDuration53Plus().Contains(typeOfService))
+            {
+                log.Debug("SDJL 90837 - Duration < 53 Check");
+                if (durationMinutes < 53)
+                {
+                    log.Debug("SDJL 90837 - FAILED Duration < 53 Check");
+                    retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 53+ minutes";
+                    log.Debug("SDJL: " + retVal);
+                }
+                else
+                {
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED Duration >= 53 Check");
+                }
+            }
+
+            // Expanded Duration Checks
+            else if (config.GetDuration241To24Hrs().Contains(typeOfService))
+            {
+                log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 241<=Duration<=1440 (24Hrs) Check");
+                if ((durationMinutes < 241) || (durationMinutes > 1440))
+                {
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "Current Duration: " + durationMinutes + "- FAILED 241<=Duration<=1440 (24Hrs) Check");                    
+                    retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 241 - 1440 minutes";
+                    log.Debug("SDJL: " + retVal);
+                }
+                else
+                {
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED 241<=Duration<=1440 (24Hrs) Check");
+                }
+            }
+            else if (config.GetDuration248To480().Contains(typeOfService))
+            {
+                log.Debug("SDJL Expanded Duration Checks: " + typeOfService + " Current Duration: " + durationMinutes + "- 248<=Duration<=480 Check");
+                if ((durationMinutes < 248) || (durationMinutes > 480))
+                {
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 248<=Duration<=480 Check");                    
+                    retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 248-480 minutes";
+                    log.Debug("SDJL: " + retVal);
+                }
+                else
+                {
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED 248<=Duration<=480 Check");
+                }
+            }
+            else if (config.GetDuration248To24Hrs().Contains(typeOfService))
+            {
+                log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 248<=Duration<=1440 (24Hrs) Check");
+                if ((durationMinutes < 248) || (durationMinutes > 1440))
+                {
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 248<=Duration<=1440 (24Hrs) Check");                    
+                    retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 248-1440 minutes";
+                    log.Debug("SDJL: " + retVal);
+                }
+                else
+                {
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 248<=Duration<=1440 Check");
+                }
+            }
+            else if (config.GetDuration26To24Hrs().Contains(typeOfService))
+            {
+                log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 26<=Duration<=1440 (24Hrs) Check");
+                if ((durationMinutes < 26) || (durationMinutes > 1440))
+                {
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 26<=Duration<=1440 (24Hrs) Check");                    
+                    retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 26-1440 minutes";
+                    log.Debug("SDJL: " + retVal);
+                }
+                else
+                {
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED 26<=Duration<=1440 Check");
+                }
+            }
+            else if (config.GetDuration30To74().Contains(typeOfService))
+            {
+                log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 30<=Duration<=74 Check");
+                if ((durationMinutes < 30) || (durationMinutes > 74))
+                {
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 30<=Duration<=74 Check");                    
+                    retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 30-74 minutes";
+                    log.Debug("SDJL: " + retVal);
+                }
+                else
+                {
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 30<=Duration<=74 Check");
+                }
+            }
+            else if (config.GetDuration30To24Hrs().Contains(typeOfService))
+            {
+                log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 30<=Duration<=1440 (24Hrs) Check");
+                if ((durationMinutes < 30) || (durationMinutes > 1440))
+                {
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 30<=Duration<=1440 Check");                    
+                    retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 30-1440 minutes";
+                    log.Debug("SDJL: " + retVal);
+                }
+                else
+                {
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED 30<=Duration<=1440 Check");
+                }
+            }
+            else if (config.GetDuration45To24Hrs().Contains(typeOfService))
+            {
+                log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 45<=Duration<=1440 (24Hrs) Check");
+                if ((durationMinutes < 45) || (durationMinutes > 1440))
+                {
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 45<=Duration<=1440 Check");                    
+                    retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 45-1440 minutes";
+                    log.Debug("SDJL: " + retVal);
+                }
+                else
+                {
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 45<=Duration<=1440 Check");
+                }
+            }
+            else if (config.GetDuration53To24Hrs().Contains(typeOfService))
+            {
+                log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 53<=Duration<=1440 (24Hrs) Check");
+                if ((durationMinutes < 53) || (durationMinutes > 1440))
+                {
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 53<=Duration<=1440 Check");
+                    retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 53-1440 minutes";
+                    log.Debug("SDJL: " + retVal);
+                }
+                else
+                {
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED 53<=Duration<=1440 Check");
+                }
+            }
+            else if (config.GetDuration8To240().Contains(typeOfService))
+            {
+                log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=240 Check");
+                if ((durationMinutes < 8) || (durationMinutes > 240))
+                {
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=240 Check");                    
+                    retVal = "For " + typeOfService + " Current Duration: " + durationMinutes +", Duration must be 8-240 minutes";
+                    log.Debug("For " + typeOfService + ", Duration must be 8-240 minutes");
+                }
+                else
+                {
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 8<=Duration<=240 Check");
+                }
+            }
+            else if (config.GetDuration8To247().Contains(typeOfService))
+            {
+                log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=247 Check");
+                if ((durationMinutes < 8) || (durationMinutes > 247))
+                {
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=247 Check");                    
+                    retVal = "For " + typeOfService + " Current Duration: " +durationMinutes + ", Duration must be 8-247 minutes";
+                    log.Debug("SDJL: " + retVal);
+                }
+                else
+                {
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED 8<=Duration<=247 Check");
+                }
+            }
+            else if (config.GetDuration8To480().Contains(typeOfService))
+            {
+                log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=480 Check");
+                if ((durationMinutes < 8) || (durationMinutes > 480))
+                {
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=480 Check");                   
+                    retVal = "For " + typeOfService + " Current Duration: "+durationMinutes+", Duration must be 8-480 minutes";
+                    log.Debug("SDJL: " + retVal);
+                }
+                else
+                {
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " - PASSED 8<=Duration<=480 Check");
+                }
+            }
+            else if (config.GetDuration8To24Hrs().Contains(typeOfService))
+            {
+                log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=1440 (24Hrs) Check");
+                if ((durationMinutes < 8) || (durationMinutes > 1440))
+                {
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=1440 (24Hrs) Check");                    
+                    retVal = "For " + typeOfService + " Current Duration: " + durationMinutes +", Duration must be 8-1440 minutes";
+                    log.Debug("SDJL: " + retVal);
+                }
+                else
+                {
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED 8<=Duration<=1440 Check");
+                }
+            }
+            else if (config.GetDuration0To24Hrs().Contains(typeOfService))
+            {
+                log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 0<=Duration<=1440 (24Hrs) Check");
+                if ((durationMinutes < 0) || (durationMinutes > 1440))
+                {
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 0<=Duration<=1440 (24Hrs) Check");
+                    log.Debug("For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 0-1440 minutes");
+                    retVal = "For " + typeOfService + " Current Duration: "+durationMinutes+", Duration must be 0-1440 minutes";
+                }
+                else
+                {
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED 0<=Duration<=1440 (24Hrs) Check");
+                }
+            }
+            else
+            {
+                log.Debug("Service Code was not one of the codes requiring duration check");
+            }
+            // END NEW EXPANDED DURATION CHECKS - 10/20/2021
+
+            return retVal;
+        }
+
     }
 }
