@@ -62,6 +62,6 @@ H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\b
 H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\bin\WinSW.NET461.xml
 H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\obj\Release\OutPatientProgressNote.csproj.AssemblyReference.cache
 H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\obj\Release\OutPatientProgressNote.csproj.CoreCompileInputs.cache
+H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\obj\Release\OutPatientProgressNote.csproj.CopyComplete
 H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\obj\Release\ScriptLinkStub.dll
 H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\obj\Release\ScriptLinkStub.pdb
-H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\obj\Release\OutPatientProgressNote.csproj.CopyComplete

@@ -832,7 +832,7 @@ namespace ScriptLinkStub
                 }
                 else
                 {
-                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: "+durationMinutes+" - PASSED 16<=Duration<=37 Check");
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " Duration: "+durationMinutes+" - PASSED 16<=Duration<=37 Check");
                     retVal = null;
                 }
             }
@@ -847,7 +847,7 @@ namespace ScriptLinkStub
                 }
                 else
                 {
-                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED 38<=Duration<=52 Check");
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " Duration: " + durationMinutes + " - PASSED 38<=Duration<=52 Check");
                 }
             }
             else if (config.GetDuration53Plus().Contains(typeOfService))
@@ -861,7 +861,7 @@ namespace ScriptLinkStub
                 }
                 else
                 {
-                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED Duration >= 53 Check");
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " Duration: " + durationMinutes + " - PASSED Duration >= 53 Check");
                 }
             }
 
@@ -877,7 +877,7 @@ namespace ScriptLinkStub
                 }
                 else
                 {
-                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED 241<=Duration<=1440 (24Hrs) Check");
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " Duration: " + durationMinutes + " - PASSED 241<=Duration<=1440 (24Hrs) Check");
                 }
             }
             else if (config.GetDuration248To480().Contains(typeOfService))
@@ -891,7 +891,7 @@ namespace ScriptLinkStub
                 }
                 else
                 {
-                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED 248<=Duration<=480 Check");
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " Duration: " + durationMinutes + " - PASSED 248<=Duration<=480 Check");
                 }
             }
             else if (config.GetDuration248To24Hrs().Contains(typeOfService))
@@ -919,7 +919,7 @@ namespace ScriptLinkStub
                 }
                 else
                 {
-                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED 26<=Duration<=1440 Check");
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " Duration: " + durationMinutes + " - PASSED 26<=Duration<=1440 Check");
                 }
             }
             else if (config.GetDuration30To74().Contains(typeOfService))
@@ -947,7 +947,7 @@ namespace ScriptLinkStub
                 }
                 else
                 {
-                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED 30<=Duration<=1440 Check");
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " Duration: " + durationMinutes + " - PASSED 30<=Duration<=1440 Check");
                 }
             }
             else if (config.GetDuration45To24Hrs().Contains(typeOfService))
@@ -975,7 +975,7 @@ namespace ScriptLinkStub
                 }
                 else
                 {
-                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED 53<=Duration<=1440 Check");
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " Duration: " + durationMinutes + " - PASSED 53<=Duration<=1440 Check");
                 }
             }
             else if (config.GetDuration8To240().Contains(typeOfService))
@@ -1003,7 +1003,7 @@ namespace ScriptLinkStub
                 }
                 else
                 {
-                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED 8<=Duration<=247 Check");
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " Duration: " + durationMinutes + " - PASSED 8<=Duration<=247 Check");
                 }
             }
             else if (config.GetDuration8To480().Contains(typeOfService))
@@ -1031,7 +1031,7 @@ namespace ScriptLinkStub
                 }
                 else
                 {
-                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED 8<=Duration<=1440 Check");
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " Duration: " + durationMinutes + " - PASSED 8<=Duration<=1440 Check");
                 }
             }
             else if (config.GetDuration0To24Hrs().Contains(typeOfService))
@@ -1045,7 +1045,7 @@ namespace ScriptLinkStub
                 }
                 else
                 {
-                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + "Duration: " + durationMinutes + " - PASSED 0<=Duration<=1440 (24Hrs) Check");
+                    log.Debug("SDJL Expanded Duration Checks ServiceCode: " + typeOfService + " Duration: " + durationMinutes + " - PASSED 0<=Duration<=1440 (24Hrs) Check");
                 }
             }
             else
