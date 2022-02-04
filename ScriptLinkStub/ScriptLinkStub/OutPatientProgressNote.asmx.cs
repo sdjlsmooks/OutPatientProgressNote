@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Services;
 
 
@@ -424,6 +425,7 @@ namespace ScriptLinkStub
                 OutPatientProgressNoteConfig config = OutPatientProgressNoteConfig.getInstance();
 
                 log.Debug("SDJL OutpatientProgressNote scriptParameter: '" + scriptParameter + "' - 2 SDJL");
+                log.Debug("SDJL: Originating IP: " + HttpContext.Current.Request.UserHostAddress);
                 switch (scriptParameter)
                 {
                     case "HS_OutpatientProgerssnote CheckDuration":
@@ -441,7 +443,7 @@ namespace ScriptLinkStub
                                     // Service Start Time
                                     case "3003":
                                         log.Debug("Service Start Time Field Value: '" + field.FieldValue + "'");
-                                        if (field.FieldValue.Length > 0)
+                                        if (field.FieldValue.Trim().Length > 0)
                                         {
                                             // See if the user entered in something like Start=1100 End=1500 (2 Hr service)
                                             if (field.FieldValue.Length == 4)
@@ -484,12 +486,18 @@ namespace ScriptLinkStub
                                                 }
                                             }
                                         }
+                                        else
+                                        {
+                                            // If nothing is in start time, abort the check, nothing to do.
+                                            log.Debug("SDJL - Nothing in Start Time - ABORT CHECK");
+                                            return returnObject;
+                                        }
                                         break;
 
                                     // Service End Time End Time
                                     case "3004":
                                         log.Debug("Service End Time Field Value: '" + field.FieldValue + "'");
-                                        if (field.FieldValue.Length > 0)
+                                        if (field.FieldValue.Trim().Length > 0)
                                         {
                                             if (field.FieldValue.Length == 4)
                                             {
