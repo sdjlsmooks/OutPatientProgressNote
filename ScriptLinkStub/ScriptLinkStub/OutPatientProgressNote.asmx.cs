@@ -429,6 +429,7 @@ namespace ScriptLinkStub
                 switch (scriptParameter)
                 {
                     case "HS_OutpatientProgerssnote CheckDuration":
+                    case "patientProgerssnote CheckDuration":
                         log.Debug("Check Progress Node Duration");
                         foreach (FormObject form in inputObject.Forms)
                         {
@@ -706,7 +707,7 @@ namespace ScriptLinkStub
                 if ((durationMinutes < 16) || (durationMinutes > 37))
                 {
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 16-37 minutes";
-                    log.Debug("SDJL 90832 - FAILED 16<=Duration<=37 Check - retVal = '" + retVal + "'");
+                    log.Debug("SDJL 90832 : " + durationMinutes + "FAILED 16 <=Duration<=37 Check - retVal = '" + retVal + "'");
                     log.Debug("SDJL: " + retVal);
 
                 }
@@ -721,7 +722,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL 90834 - 38<=Duration<=52 Check");
                 if ((durationMinutes < 38) || (durationMinutes > 52))
                 {
-                    log.Debug("SDJL 90834 - FAILED 38<=Duration<=52 Check");
+                    log.Debug("SDJL 90834 : " + durationMinutes + " - FAILED:  38 <=Duration<=52 Check");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 38-52 minutes";
                     log.Debug("SDJL: " + retVal);
                 }
@@ -735,7 +736,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL 90837 - Duration < 53 Check");
                 if (durationMinutes < 53)
                 {
-                    log.Debug("SDJL 90837 - FAILED Duration < 53 Check");
+                    log.Debug("SDJL 90837 : " + durationMinutes + " FAILED Duration < 53 Check");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 53+ minutes";
                     log.Debug("SDJL: " + retVal);
                 }
@@ -765,7 +766,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL Expanded Duration Checks: " + typeOfService + " Current Duration: " + durationMinutes + "- 248<=Duration<=480 Check");
                 if ((durationMinutes < 248) || (durationMinutes > 480))
                 {
-                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 248<=Duration<=480 Check");
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService +": " + durationMinutes +  "- FAILED 248<=Duration<=480 Check");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 248-480 minutes";
                     log.Debug("SDJL: " + retVal);
                 }
@@ -779,7 +780,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 248<=Duration<=1440 (24Hrs) Check");
                 if ((durationMinutes < 248) || (durationMinutes > 1440))
                 {
-                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 248<=Duration<=1440 (24Hrs) Check");
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + ": " + durationMinutes + "- FAILED 248<=Duration<=1440 (24Hrs) Check");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 248-1440 minutes";
                     log.Debug("SDJL: " + retVal);
                 }
@@ -793,7 +794,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 26<=Duration<=1440 (24Hrs) Check");
                 if ((durationMinutes < 26) || (durationMinutes > 1440))
                 {
-                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 26<=Duration<=1440 (24Hrs) Check");
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + ": " + durationMinutes + " - FAILED 26<=Duration<=1440 (24Hrs) Check");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 26-1440 minutes";
                     log.Debug("SDJL: " + retVal);
                 }
@@ -807,7 +808,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 30<=Duration<=74 Check");
                 if ((durationMinutes < 30) || (durationMinutes > 74))
                 {
-                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 30<=Duration<=74 Check");
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + ": " + durationMinutes + " - FAILED 30<=Duration<=74 Check");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 30-74 minutes";
                     log.Debug("SDJL: " + retVal);
                 }
@@ -821,7 +822,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 30<=Duration<=1440 (24Hrs) Check");
                 if ((durationMinutes < 30) || (durationMinutes > 1440))
                 {
-                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 30<=Duration<=1440 Check");
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + ": " + durationMinutes + " - FAILED 30 <=Duration<=1440 Check");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 30-1440 minutes";
                     log.Debug("SDJL: " + retVal);
                 }
@@ -849,7 +850,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 53<=Duration<=1440 (24Hrs) Check");
                 if ((durationMinutes < 53) || (durationMinutes > 1440))
                 {
-                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 53<=Duration<=1440 Check");
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + ": " + durationMinutes + " - FAILED 53<=Duration<=1440 Check");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 53-1440 minutes";
                     log.Debug("SDJL: " + retVal);
                 }
@@ -863,7 +864,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=240 Check");
                 if ((durationMinutes < 8) || (durationMinutes > 240))
                 {
-                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=240 Check");
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + ": " + durationMinutes + " - FAILED 8<=Duration<=240 Check");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 8-240 minutes";
                     log.Debug("For " + typeOfService + ", Duration must be 8-240 minutes");
                 }
@@ -877,7 +878,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=247 Check");
                 if ((durationMinutes < 8) || (durationMinutes > 247))
                 {
-                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=247 Check");
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + ": " + durationMinutes + " - FAILED 8<=Duration<=247 Check");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 8-247 minutes";
                     log.Debug("SDJL: " + retVal);
                 }
@@ -891,7 +892,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=480 Check");
                 if ((durationMinutes < 8) || (durationMinutes > 480))
                 {
-                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=480 Check");
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + ": " + durationMinutes + " - FAILED 8<=Duration<=480 Check");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 8-480 minutes";
                     log.Debug("SDJL: " + retVal);
                 }
@@ -905,7 +906,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=1440 (24Hrs) Check");
                 if ((durationMinutes < 8) || (durationMinutes > 1440))
                 {
-                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=1440 (24Hrs) Check");
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + ": " + durationMinutes + " - FAILED 8<=Duration<=1440 (24Hrs) Check");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 8-1440 minutes";
                     log.Debug("SDJL: " + retVal);
                 }
@@ -919,7 +920,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 0<=Duration<=1440 (24Hrs) Check");
                 if ((durationMinutes < 0) || (durationMinutes > 1440))
                 {
-                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 0<=Duration<=1440 (24Hrs) Check");
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + ": " + durationMinutes + " - FAILED 0<=Duration<=1440 (24Hrs) Check");
                     log.Debug("For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 0-1440 minutes");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 0-1440 minutes";
                 }
@@ -933,7 +934,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 60<=Duration<=1440 (24Hrs) Check");
                 if ((durationMinutes < 60) || (durationMinutes > 1440))
                 {
-                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 60<=Duration<=1440 (24Hrs) Check");
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + ": " + durationMinutes + "- FAILED 60<=Duration<=1440 (24Hrs) Check");
                     log.Debug("For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 60-1440 minutes");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 60-1440 minutes";
                 }
@@ -947,7 +948,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=90 Check");
                 if ((durationMinutes < 8) || (durationMinutes > 90))
                 {
-                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=90 Check");
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + ": " + durationMinutes + "- FAILED 8<=Duration<=90 Check");
                     log.Debug("For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 8-90 minutes");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 8-90 minutes";
                 }
@@ -961,7 +962,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 8<=Duration<=60 Check");
                 if ((durationMinutes < 8) || (durationMinutes > 60))
                 {
-                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 8<=Duration<=60 Check");
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + ": " + durationMinutes + "- FAILED 8<=Duration<=60 Check");
                     log.Debug("For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 8-60 minutes");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 8-60 minutes";
                 }
@@ -975,7 +976,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 1<=Duration<=247 Check");
                 if ((durationMinutes < 1) || (durationMinutes > 247))
                 {
-                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 1<=Duration<=247 Check");
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + ": " + durationMinutes + " - FAILED 1<=Duration<=247 Check");
                     log.Debug("For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 1-247 minutes");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 1-247 minutes";
                 }
@@ -989,7 +990,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 1<=Duration<=120 Check");
                 if ((durationMinutes < 1) || (durationMinutes > 120))
                 {
-                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 1<=Duration<=120 Check");
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + ": " + durationMinutes + " - FAILED 1<=Duration<=120 Check");
                     log.Debug("For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 1-120 minutes");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 1-120 minutes";
                 }
@@ -1003,7 +1004,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 15<=Duration<=1440 (24Hrs) Check");
                 if ((durationMinutes < 15) || (durationMinutes > 1440))
                 {
-                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 15<=Duration<=1440 Check");
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + ": " + durationMinutes + "- FAILED 15<=Duration<=1440 Check");
                     log.Debug("For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 15-1440 minutes");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 15-1440 minutes";
                 }
@@ -1017,7 +1018,7 @@ namespace ScriptLinkStub
                 log.Debug("SDJL Expanded Duration Checks: " + typeOfService + "- 16<=Duration<=1440 (24Hrs) Check");
                 if ((durationMinutes < 16) || (durationMinutes > 1440))
                 {
-                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + "- FAILED 16<=Duration<=1440 Check");
+                    log.Debug("SDJL Expanded Duration Checks " + typeOfService + ": " + durationMinutes + "- FAILED 16<=Duration<=1440 Check");
                     log.Debug("For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 16-1440 minutes");
                     retVal = "For " + typeOfService + " Current Duration: " + durationMinutes + ", Duration must be 16-1440 minutes";
                 }

@@ -9,7 +9,7 @@
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <LastActiveSolutionConfig>Release|Any CPU</LastActiveSolutionConfig>
-    <NameOfLastUsedPublishProfile>H:\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\Properties\PublishProfiles\IISProfile.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>C:\Users\davidl\OneDrive - Health Solutions\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\ScriptLinkStub\Properties\PublishProfiles\IISProfile1.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>

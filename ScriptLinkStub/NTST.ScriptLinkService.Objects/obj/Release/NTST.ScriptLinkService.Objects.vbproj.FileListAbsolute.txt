@@ -16,7 +16,6 @@ C:\Users\davidl\OneDrive - Health Solutions\AvatarMigrationProject\OutPatientPro
 C:\Users\davidl\OneDrive - Health Solutions\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\NTST.ScriptLinkService.Objects\bin\Release\NTST.ScriptLinkService.Objects.xml
 C:\Users\davidl\OneDrive - Health Solutions\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\NTST.ScriptLinkService.Objects\bin\Release\NLog.dll
 C:\Users\davidl\OneDrive - Health Solutions\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\NTST.ScriptLinkService.Objects\bin\Release\NLog.xml
-C:\Users\davidl\OneDrive - Health Solutions\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\NTST.ScriptLinkService.Objects\obj\Release\NTST.ScriptLinkService.Objects.vbproj.AssemblyReference.cache
 C:\Users\davidl\OneDrive - Health Solutions\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\NTST.ScriptLinkService.Objects\obj\Release\NTST.ScriptLinkService.Objects.Resources.resources
 C:\Users\davidl\OneDrive - Health Solutions\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\NTST.ScriptLinkService.Objects\obj\Release\NTST.ScriptLinkService.Objects.vbproj.GenerateResource.cache
 C:\Users\davidl\OneDrive - Health Solutions\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\NTST.ScriptLinkService.Objects\obj\Release\NTST.ScriptLinkService.Objects.vbproj.CoreCompileInputs.cache
@@ -24,3 +23,4 @@ C:\Users\davidl\OneDrive - Health Solutions\AvatarMigrationProject\OutPatientPro
 C:\Users\davidl\OneDrive - Health Solutions\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\NTST.ScriptLinkService.Objects\obj\Release\NTST.ScriptLinkService.Objects.dll
 C:\Users\davidl\OneDrive - Health Solutions\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\NTST.ScriptLinkService.Objects\obj\Release\NTST.ScriptLinkService.Objects.xml
 C:\Users\davidl\OneDrive - Health Solutions\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\NTST.ScriptLinkService.Objects\obj\Release\NTST.ScriptLinkService.Objects.pdb
+C:\Users\davidl\OneDrive - Health Solutions\AvatarMigrationProject\OutPatientProgressNote\ScriptLinkStub\NTST.ScriptLinkService.Objects\obj\Release\NTST.ScriptLinkService.Objects.vbproj.AssemblyReference.cache
