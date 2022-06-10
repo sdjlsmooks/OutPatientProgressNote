@@ -416,6 +416,8 @@ namespace ScriptLinkStub
             int durationFieldValue = 0;
             DateTime? serviceStartTime = null;
             DateTime? serviceEndTime = null;
+            string clientID = "";
+            DateTime? dateOfService = null;
             string typeOfService = "";
 
             try
@@ -440,6 +442,33 @@ namespace ScriptLinkStub
                                 //log.Debug("SDJL FieldValue '" + field.FieldValue + "'");
                                 switch (field.FieldNumber)
                                 {
+                                    // Client ID
+                                    case "51200":
+                                        log.Debug("Client ID: '" + field.FieldValue + "'");
+                                        clientID = field.FieldValue.Trim();
+                                        break;
+
+                                    // Date of Service
+                                    case "51011":
+                                        log.Debug("Date Of Service: '" + field.FieldValue + "'");
+                                        String dateOfServiceStr = field.FieldValue;
+                                        if (dateOfServiceStr != null)
+                                        {
+                                            try
+                                            {
+                                                dateOfService = DateTime.Parse(field.FieldValue);
+                                            }
+                                            catch (FormatException e)
+                                            {
+                                                log.Debug("SDJL - Parse Date Of Service '" + field.FieldValue + "' Format Exception: " + e.Message);
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            log.Debug("SDJL - Date Of Service: NULL");
+                                        }
+                                        break;
 
                                     // Service Start Time
                                     case "3003":
@@ -561,8 +590,12 @@ namespace ScriptLinkStub
                         int calculatedDurationMinutes = 0;
 
                         if ((serviceStartTime != null) && (serviceEndTime != null))
-                        {
-                            TimeSpan calculatedDuration = ((DateTime)serviceEndTime).Subtract((DateTime)serviceStartTime);
+                        {                            
+                            TimeSpan calculatedDuration = ((DateTime)serviceEndTime) - ((DateTime)serviceStartTime);
+                            // Minutes calcuation not behaving as expected.
+                            int calculatedDurationSeconds = (int)calculatedDuration.TotalSeconds;
+                            int calculatedDurationMinutes2 = calculatedDurationSeconds / 60;
+                            log.Debug("CalculatedDurationMinutes (new calculation): '" + calculatedDurationMinutes2 + "'");
                             calculatedDurationMinutes = (int)calculatedDuration.TotalMinutes;
                         }
                         log.Debug("Calculated Duration Total Minutes = '" + calculatedDurationMinutes);
@@ -624,7 +657,7 @@ namespace ScriptLinkStub
                         log.Debug("Contains: config.GetDuration16To24Hrs().Contains(typeOfService)" + config.GetDuration16To24Hrs().Contains(typeOfService));
 
                         // ORIGINAL DURATION CHECKS
-                        log.Debug("OutPationProgressNote.CheckDuration: typeOfService='" + typeOfService + "'");
+                        log.Debug("OutPatientProgressNote.CheckDuration: typeOfService='" + typeOfService + "'");
                         string errorMessage = validateDuration(typeOfService, durationFieldValue);
                         log.Debug("errorMessage SDJL after validateDuration errorMessage= '" + errorMessage + "'");
 
